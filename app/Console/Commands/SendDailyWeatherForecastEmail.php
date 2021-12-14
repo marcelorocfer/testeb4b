@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use Throwable;
 use Illuminate\Console\Command;
 use App\Services\AllUsersService;
 use App\Mail\DailyWeatherForecast;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Services\WeatherForecastService;
 
@@ -41,12 +43,18 @@ class SendDailyWeatherForecastEmail extends Command
      */
     public function handle(AllUsersService $allUsersService, WeatherForecastService $weatherForecastService)
     {
-        $weatherForecastService->updateWeather();
-        $data = $allUsersService->getAllUsers();
+        try {
+            $weatherForecastService->updateWeather();
+            $data = $allUsersService->getAllUsers();
 
-        foreach ($data as $key => $value) {
-            $value['forecast'] = json_decode($value['forecast'], true);
-            Mail::to($value['email'])->send(new DailyWeatherForecast($value));
+            foreach ($data as $key => $value) {
+                $value['forecast'] = json_decode($value['forecast'], true);
+                Mail::to($value['email'])->send(new DailyWeatherForecast($value));
+            }
+            Log::info("E-mail enviado!");
+        } catch (\Throwable $th) {
+            //throw $th;
+            Log::error("Erro: ".$th);
         }
     }
 }
