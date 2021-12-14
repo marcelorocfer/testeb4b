@@ -3,6 +3,8 @@
 
 - composer install
 - touch database/database.sqlite
+- configurar base de dados em .env
+- alterar CACHE_DRIVER de file para array no arquivo .env
 - php artisan migrate
 - configurar e-mail no arquivo .env
 - adicionar ao crontab:
