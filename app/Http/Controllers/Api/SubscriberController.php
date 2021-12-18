@@ -8,6 +8,8 @@ use App\Services\WeatherForecastService;
 
 class SubscriberController extends Controller
 {
+    protected $weatherForecastService;
+    
     public function __construct(WeatherForecastService $weatherForecastService)
     {
         $this->weatherForecastService = $weatherForecastService;

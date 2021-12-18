@@ -16,6 +16,9 @@ class WeatherForecastService
     const API_KEY  = '6788d05f2db19d2812252106d272afd3';
     const BASE_URL = "api.openweathermap.org/data/2.5/weather";
 
+    protected $user;
+    protected $request;
+
     public function __construct(User $user, Request $request)
     {
         $this->user = $user;
